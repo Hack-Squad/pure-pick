@@ -2,13 +2,17 @@ import React from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import TabRouter from './src/navigators/TabRouter';
-import { Text, View } from 'react-native';
+import {backgroundColor, ThemeProvider} from '@shopify/restyle';
+import {darkTheme} from './src/theme';
 
 function App(): React.JSX.Element {
+
   return (
-    <NavigationContainer>
-      <TabRouter />
-    </NavigationContainer>
+    <ThemeProvider theme={darkTheme}>
+	    <NavigationContainer>
+        <TabRouter />
+      </NavigationContainer>  
+    </ThemeProvider>
   );
 }
 

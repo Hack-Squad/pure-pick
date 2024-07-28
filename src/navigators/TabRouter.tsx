@@ -2,9 +2,9 @@ import React from 'react';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import ScanScreen from '../screens/ScanScreen';
+import HomeScreen from '../screens/HomeScreen/HomeScreen';
+import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
+import ScanScreen from '../screens/ScanScreen/ScanScreen';
 
 const Tab = createBottomTabNavigator();
 
