@@ -14,6 +14,8 @@ import {styles} from './styles';
 import ThemedBox from '../../components/ThemedBox';
 import {useTheme} from '@shopify/restyle';
 import MlKitUtil from '../../utils/mlkit.util';
+import {firestoreService} from '../../service/firestore.service';
+import { FirestoreCollectionsEnum } from '../../constants/firestore-collections.constants';
 
 // ask for permission
 // if permission granted, show camera
@@ -41,53 +43,60 @@ function ScanScreen() {
   }, []);
 
   const handleBarcodeScanning = async () => {
-	const barcodes = await MlKitUtil.scanBarcode(`file://'${imageSource}`);
-	console.log(barcodes);
-  }
+    console.log('Getting all collections');
+    const barcodes = await MlKitUtil.scanBarcode(`file://'${imageSource}`);
+    console.log(barcodes);
+	if(barcodes?.[0]?.value){
+		const product = await firestoreService.getDocument(FirestoreCollectionsEnum.BRANDED_FOODS_US, barcodes[0].value);
+		console.log(product);
+	}
+  };
 
-    return (
-      <ThemedBox style={styles.container}>
-        {device === null ? (
-          <React.Fragment>
-            <Text>Camera not available</Text>
-            <Button
-              title="Go to settings"
-              onPress={() => Linking.openSettings()}
-            />
-          </React.Fragment>
-        ) : imageSource !== '' ? (
-          <View>
-            <Image
-              style={styles.image}
-              source={{
-                uri: `file://'${imageSource}`,
-              }}
-            />
-			<View style={styles.buttonContainer}>
-			<Button title="Use Photo" onPress={() => handleBarcodeScanning()} />
-			<Button title="Retake Photo" onPress={() => setShowCamera(true)} />
-			</View>
+ 
+
+  return (
+    <ThemedBox style={styles.container}>
+      {device === null ? (
+        <React.Fragment>
+          <Text>Camera not available</Text>
+          <Button
+            title="Go to settings"
+            onPress={() => Linking.openSettings()}
+          />
+        </React.Fragment>
+      ) : imageSource !== '' ? (
+        <View>
+          <Image
+            style={styles.image}
+            source={{
+              uri: `file://'${imageSource}`,
+            }}
+          />
+          <View style={styles.buttonContainer}>
+            <Button title="Use Photo" onPress={() => handleBarcodeScanning()} />
+            <Button title="Retake Photo" onPress={() => setShowCamera(true)} />
           </View>
-        ) : (
-          <React.Fragment>
-            <Camera
-              ref={cameraRef}
-              style={StyleSheet.absoluteFill}
-              device={device}
-              isActive={true || showCamera}
-              photo={true}
-            />
+        </View>
+      ) : (
+        <React.Fragment>
+          <Camera
+            ref={cameraRef}
+            style={StyleSheet.absoluteFill}
+            device={device}
+            isActive={true || showCamera}
+            photo={true}
+          />
 
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={styles.camButton}
-                onPress={() => capturePhoto()}
-              />
-            </View>
-          </React.Fragment>
-        )}
-      </ThemedBox>
-    );
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.camButton}
+              onPress={() => capturePhoto()}
+            />
+          </View>
+        </React.Fragment>
+      )}
+    </ThemedBox>
+  );
 }
 
 export default ScanScreen;
