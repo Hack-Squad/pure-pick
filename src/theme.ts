@@ -23,7 +23,7 @@ const paletteDark = {
   greenPrimary: '#85E8D1',
   greenDark: '#60B3A6',
 
-  black: 'black',
+  black: '#0B0B0B',
   white: '#0B0B0B',
 };
 

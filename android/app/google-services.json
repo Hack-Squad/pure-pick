@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "914463697134",
+    "project_id": "scan-it-5eb96",
+    "storage_bucket": "scan-it-5eb96.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914463697134:android:140f1a5b026034ca086bff",
+        "android_client_info": {
+          "package_name": "com.scanit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3Wrtx66YC0oH8GudR2hG38YGVyIqVLkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

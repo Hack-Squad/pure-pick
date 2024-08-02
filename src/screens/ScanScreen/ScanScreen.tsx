@@ -10,110 +10,84 @@ import {
 } from 'react-native';
 import {Camera} from 'react-native-vision-camera';
 import useCameraHook, {CameraPermissionEnum} from '../../hooks/useCamera.hook';
-
 import {styles} from './styles';
+import ThemedBox from '../../components/ThemedBox';
+import {useTheme} from '@shopify/restyle';
+import MlKitUtil from '../../utils/mlkit.util';
+
+// ask for permission
+// if permission granted, show camera
+// if permission denied, show error message and button to go to settings
+// if permission not determined, show button to ask for permission
+// if permission restricted, show error message and button to go to settings
 
 function ScanScreen() {
-  const {cameraRef, device, showCamera, imageSource, setShowCamera, setImageSource, getPermission, capturePhoto, getPermissionStatus} = useCameraHook()
+  const {
+    cameraRef,
+    device,
+    showCamera,
+    imageSource,
+    setShowCamera,
+    setImageSource,
+    getPermission,
+    capturePhoto,
+    getPermissionStatus,
+  } = useCameraHook();
   const currentCameraPermission = getPermissionStatus();
+  const {spacing} = useTheme();
 
   useEffect(() => {
     getPermission();
   }, []);
 
-  
-  
-
-  
-
-  if (device == null) {
-    return <Text>Camera not available</Text>;
+  const handleBarcodeScanning = async () => {
+	const barcodes = await MlKitUtil.scanBarcode(`file://'${imageSource}`);
+	console.log(barcodes);
   }
 
-  return (
-    <View style={styles.container}>
-      {showCamera ? (
-        <>
-          <Camera
-            ref={cameraRef}
-            style={StyleSheet.absoluteFill}
-            device={device}
-            isActive={showCamera}
-            photo={true}
-          />
-
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.camButton}
-              onPress={() => capturePhoto()}
+    return (
+      <ThemedBox style={styles.container}>
+        {device === null ? (
+          <React.Fragment>
+            <Text>Camera not available</Text>
+            <Button
+              title="Go to settings"
+              onPress={() => Linking.openSettings()}
             />
-          </View>
-        </>
-      ) : (
-        <>
-          {imageSource !== '' ? (
+          </React.Fragment>
+        ) : imageSource !== '' ? (
+          <View>
             <Image
               style={styles.image}
               source={{
                 uri: `file://'${imageSource}`,
               }}
             />
-          ) : null}
+			<View style={styles.buttonContainer}>
+			<Button title="Use Photo" onPress={() => handleBarcodeScanning()} />
+			<Button title="Retake Photo" onPress={() => setShowCamera(true)} />
+			</View>
+          </View>
+        ) : (
+          <React.Fragment>
+            <Camera
+              ref={cameraRef}
+              style={StyleSheet.absoluteFill}
+              device={device}
+              isActive={true || showCamera}
+              photo={true}
+            />
 
-          <View style={styles.backButton}>
-            <TouchableOpacity
-              style={{
-                backgroundColor: 'rgba(0,0,0,0.2)',
-                padding: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 10,
-                borderWidth: 2,
-                borderColor: '#fff',
-                width: 100,
-              }}
-              onPress={() => setShowCamera(true)}>
-              <Text style={{color: 'white', fontWeight: '500'}}>Back</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.buttonContainer}>
-            <View style={styles.buttons}>
+            <View style={styles.buttonContainer}>
               <TouchableOpacity
-                style={{
-                  backgroundColor: '#fff',
-                  padding: 10,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: '#77c3ec',
-                }}
-                onPress={() => setShowCamera(true)}>
-                <Text style={{color: '#77c3ec', fontWeight: '500'}}>
-                  Retake
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#77c3ec',
-                  padding: 10,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: 'white',
-                }}
-                onPress={() => setShowCamera(true)}>
-                <Text style={{color: 'white', fontWeight: '500'}}>
-                  Use Photo
-                </Text>
-              </TouchableOpacity>
+                style={styles.camButton}
+                onPress={() => capturePhoto()}
+              />
             </View>
-          </View>
-        </>
-      )}
-    </View>
-  );
+          </React.Fragment>
+        )}
+      </ThemedBox>
+    );
 }
 
 export default ScanScreen;

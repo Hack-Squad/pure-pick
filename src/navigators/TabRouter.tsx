@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { RoutesEnum } from '../constants/routes.contants';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
@@ -10,10 +11,10 @@ const Tab = createBottomTabNavigator();
 
 function TabRouter() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Scan" component={ScanScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+    <Tab.Navigator initialRouteName={RoutesEnum.SCAN}>
+      <Tab.Screen name={RoutesEnum.HOME} component={HomeScreen} />
+      <Tab.Screen name={RoutesEnum.SCAN} component={ScanScreen} />
+      <Tab.Screen name={RoutesEnum.PROFILE} component={ProfileScreen} />
     </Tab.Navigator>
   );
 }

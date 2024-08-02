@@ -1,16 +1,16 @@
 import React from 'react';
-
+import { Text } from 'react-native';
 import {createBox, createText, useTheme} from '@shopify/restyle';
 import {Theme} from '../theme';
 
 const Box = createBox<Theme>();
 
-function ThemedBox({children}: React.PropsWithChildren) {
+function ThemedBox({children, style = {}}: {children: React.ReactNode, style?: object}) {	
   const theme = useTheme();
-  const {mainBackground} = theme.colors;
+  const { spacing} = theme;
 
   return (
-    <Box flex={1} backgroundColor={mainBackground}>
+    <Box style={style}>
       {children}
     </Box>
   );
