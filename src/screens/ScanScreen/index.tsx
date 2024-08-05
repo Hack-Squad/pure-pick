@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import PreviewCapturedImage from './PreviewCapturedImage';
 import Permissions from './Permissions';
-import {Camera, useFrameProcessor} from 'react-native-vision-camera';
+import {Camera} from 'react-native-vision-camera';
 import useCameraHook, {CameraPermissionEnum} from '../../hooks/useCamera.hook';
 import {styles} from './styles';
 import ThemedBox from '../../components/ThemedBox';
@@ -21,6 +21,7 @@ import {firestoreService} from '../../service/firestore.service';
 import {FirestoreCollectionsEnum} from '../../constants/firestore-collections.constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {RoutesEnum} from '../../constants/routes.contants';
+import NoCameraScreen from './NoCameraDeviceFound';
 
 enum CameraModeEnum {
   BARCODE = 'barcode',
@@ -61,17 +62,29 @@ function ScanScreen({navigation}: {navigation: any}) {
     getPermission();
   }, []);
 
-  const handleBarcodeScanning = async () => {
-    console.log('Getting all collections');
-    const barcodes = await MlKitUtil.scanBarcode(`file://'${imageSource}`);
-    console.log(barcodes);
-    if (barcodes?.[0]?.value) {
-      const product = await firestoreService.getDocument(
-        FirestoreCollectionsEnum.BRANDED_FOODS_US,
-        barcodes[0].value,
-      );
-      console.log(product);
+  const handleUsePhoto = async () => {
+    if (cameraMode === CameraModeEnum.BARCODE) {
+      const barcodes = await MlKitUtil.scanBarcode(`file://'${imageSource}`);
+      console.log(barcodes);
+      if (barcodes?.[0]?.value) {
+        const product = await firestoreService.getDocument(
+          FirestoreCollectionsEnum.BRANDED_FOODS_US,
+          barcodes[0].value,
+        );
+        console.log(product);
+      }
     }
+	else{
+
+	  const response = await MlKitUtil.detectText(`file://'${imageSource}`);
+	  console.log(response);
+
+	}
+  };
+
+  const handleRetakePhoto = () => {
+    setImageSource('');
+    setShowCamera(true);
   };
 
   const handleFlashMode = () => {
@@ -109,16 +122,27 @@ function ScanScreen({navigation}: {navigation: any}) {
   return (
     <ThemedBox style={styles.container}>
       {device === null ? (
-        <Permissions />
+        <NoCameraScreen />
+      ) : currentCameraPermission !== CameraPermissionEnum.GRANTED ? (
+        <Permissions
+          permissionStatus={currentCameraPermission}
+          onRequestPermission={getPermission}
+        />
       ) : imageSource !== '' ? (
         <PreviewCapturedImage
-          handleBarcodeScanning={handleBarcodeScanning}
-          setShowCamera={setShowCamera}
+          handleRetakePhoto={handleRetakePhoto}
+          handleUsePhoto={handleUsePhoto}
           imageSource={imageSource}
         />
       ) : (
         <React.Fragment>
-          <View style={[styles.cameraContainer,CameraModeEnum.PHOTO === cameraMode ? styles.cameraContainerPhoto : styles.cameraContainerBarcode]}>
+          <View
+            style={[
+              styles.cameraContainer,
+              CameraModeEnum.PHOTO === cameraMode
+                ? styles.cameraContainerPhoto
+                : styles.cameraContainerBarcode,
+            ]}>
             <Camera
               ref={cameraRef}
               style={styles.preview}
@@ -168,7 +192,7 @@ function ScanScreen({navigation}: {navigation: any}) {
             </View>
           </View>
 
-          {cameraMode === 'barcode' && (
+          {cameraMode === CameraModeEnum.BARCODE && (
             <Text style={styles.instructions}>
               Point your camera at a barcode
             </Text>

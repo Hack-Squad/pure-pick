@@ -4,6 +4,7 @@ import {createBox, createText, useTheme} from '@shopify/restyle';
 import {Theme} from '../../theme';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ThemedBox from '../../components/ThemedBox';
+import ProductCard from '../../components/ProductCard';
 
 function HomeScreen() {
 

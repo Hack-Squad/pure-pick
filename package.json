@@ -13,6 +13,8 @@
     "@react-native-firebase/app": "^20.3.0",
     "@react-native-firebase/firestore": "^20.3.0",
     "@react-native-ml-kit/barcode-scanning": "^1.4.1",
+    "@react-native-ml-kit/image-labeling": "^1.4.1",
+    "@react-native-ml-kit/text-recognition": "^1.5.2",
     "@react-native-vector-icons/material-icons": "^0.0.1-alpha.16",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",

@@ -3,5 +3,6 @@ export enum RoutesEnum{
 	SCAN = 'Scan',
 	PROFILE = 'Profile',
 	SEARCH = 'Search',
-	NUTRITIONIST = 'Nutritionist'
+	NUTRITIONIST = 'Nutritionist',
+	PRODUCT_DETAILS = 'ProductDetails'
 }

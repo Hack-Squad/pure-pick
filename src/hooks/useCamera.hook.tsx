@@ -16,7 +16,7 @@ export default function useCameraHook() {
   const [imageSource, setImageSource] = useState('');
 
   const getPermission = async () => {
-    const newCameraPermission = await Camera.requestCameraPermission();
+       await Camera.requestCameraPermission();
   };
 
   const getPermissionStatus = () => {

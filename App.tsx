@@ -6,12 +6,11 @@ import {backgroundColor, ThemeProvider} from '@shopify/restyle';
 import {darkTheme} from './src/theme';
 
 function App(): React.JSX.Element {
-
   return (
     <ThemeProvider theme={darkTheme}>
-	    <NavigationContainer>
+      <NavigationContainer>
         <TabRouter />
-      </NavigationContainer>  
+      </NavigationContainer>
     </ThemeProvider>
   );
 }
