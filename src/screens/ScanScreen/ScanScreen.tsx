@@ -55,7 +55,7 @@ function ScanScreen() {
  
 
   return (
-    <ThemedBox style={styles.container}>
+    <ThemedBox>
       {device === null ? (
         <React.Fragment>
           <Text>Camera not available</Text>
