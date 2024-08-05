@@ -3,11 +3,11 @@ import React from 'react';
 import {RoutesEnum} from '../constants/routes.contants';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import HomeScreen from '../screens/HomeScreen/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
-import ScanScreen from '../screens/ScanScreen/ScanScreen';
-import SearchScreen from '../screens/SearchScreen/SearchScreen';
-import NutritionistScreen from '../screens/NutritionistScreen/NutritionistScreen';
+import HomeScreen from '../screens/HomeScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import ScanScreen from '../screens/ScanScreen';
+import SearchScreen from '../screens/SearchScreen';
+import NutritionistScreen from '../screens/NutritionistScreen';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -51,7 +51,7 @@ function TabRouter() {
         component={NutritionistScreen}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="person" size={size} color={color} />
+            <Icon name="chat" size={size} color={color} />
           ),
         }}
       />

@@ -1,53 +1,98 @@
 import {
   StyleSheet,
 } from 'react-native';
+import { Theme } from '../../theme';
 
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  button: {
-    backgroundColor: 'gray',
-  },
-  backButton: {
-    backgroundColor: 'rgba(0,0,0,0.0)',
-    position: 'absolute',
-    justifyContent: 'center',
-    width: '100%',
-    top: 0,
-    padding: 20,
-  },
-  buttonContainer: {
-    backgroundColor: 'rgba(0,0,0,0.2)',
-    position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    bottom: 0,
-    padding: 20,
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  camButton: {
-    height: 80,
-    width: 80,
-    borderRadius: 40,
-    //ADD backgroundColor COLOR GREY
-    backgroundColor: '#B2BEB5',
+		backgroundColor: '#1E1E2E',
+	},
+	headerButtons: {
+		position: 'absolute',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		top: 20,
+		left: 20,
+		right: 20,
+		zIndex: 1,
+	},
+	cameraContainer: {
+		height: "50%",
+		width: "90%",
+		justifyContent: 'center',
+		borderWidth: 2,
+		borderColor: 'white',
+	},
+	cameraContainerPhoto: {
+		height: "50%",
+		width: "90%",
+	},
+	cameraContainerBarcode: {
+		height: "30%",
+		width: "90%",
+	},
+	preview: {
+		width: "100%",
+		height: "100%",
 
-    alignSelf: 'center',
-    borderWidth: 4,
-    borderColor: 'white',
+		backgroundColor: 'transparent',
+		alignSelf: 'center',
+		justifyContent: 'center'
+	},
+	instructions: {
+		position: 'absolute',
+		bottom: 200,
+		left: 0,
+		right: 0,
+		textAlign: 'center',
+		color: 'white',
+	},
+	buttonContainer: {
+		flexDirection: 'row',
+		alignSelf: 'center',
+		position: 'absolute',
+		bottom: 30,
+		left: 20,
+		right: 20,
+		backgroundColor: "#000000",
+		padding: 6,
+		gap: 2,
+		borderRadius: 10,
+	},
+	button: {
+		padding: 10,
+		borderRadius: 10,
+		width: "50%",
+	},
+	activeButton: {
+		backgroundColor: '#4CAF50',
+	},
+	buttonText: {
+		color: 'white',
+		textAlign: 'center',
+	},
+
+	captureButtonContainer: {
+		position: 'absolute',
+		bottom: 110,
+		alignItems: 'center',
   },
-  image: {
-    width: '100%',
-    height: '100%',
-    aspectRatio: 9 / 16,
+	captureButton: {
+		width: 70,
+		height: 70,
+		borderRadius: 35,
+		backgroundColor: '#808080', // Grey color
+		borderWidth: 5,
+		borderColor: '#d3d3d3', // Light grey border
+		justifyContent: 'center',
+		alignItems: 'center',
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 5 },
+		shadowOpacity: 0.3,
+		shadowRadius: 10,
+		elevation: 5,
   },
+
 });
