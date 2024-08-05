@@ -6,6 +6,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 import ScanScreen from '../screens/ScanScreen/ScanScreen';
+import SearchScreen from '../screens/SearchScreen/SearchScreen';
+import NutritionistScreen from '../screens/NutritionistScreen/NutritionistScreen';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -23,6 +25,17 @@ function TabRouter() {
           ),
         }}
       />
+
+      <Tab.Screen
+        name={RoutesEnum.SEARCH}
+        component={SearchScreen}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Icon name="search" size={size} color={color} />
+          ),
+        }}
+      />
+
       <Tab.Screen
         name={RoutesEnum.SCAN}
         component={ScanScreen}
@@ -32,6 +45,17 @@ function TabRouter() {
           ),
         }}
       />
+
+      <Tab.Screen
+        name={RoutesEnum.NUTRITIONIST}
+        component={NutritionistScreen}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Icon name="person" size={size} color={color} />
+          ),
+        }}
+      />
+
       <Tab.Screen
         name={RoutesEnum.PROFILE}
         component={ProfileScreen}
