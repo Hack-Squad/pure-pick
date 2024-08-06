@@ -42,7 +42,9 @@ enum FlashModeEnum {
 
 function ScanScreen({navigation}: {navigation: any}) {
   const {spacing} = useTheme();
-  const [cameraMode, setCameraMode] = useState<CameraModeEnum>(CameraModeEnum.BARCODE);
+  const [cameraMode, setCameraMode] = useState<CameraModeEnum>(
+    CameraModeEnum.BARCODE,
+  );
   const [flashMode, setFlashMode] = useState<FlashModeEnum>(FlashModeEnum.AUTO);
   const [capturing, setCapturing] = useState<Boolean>(false);
   const {
@@ -56,7 +58,8 @@ function ScanScreen({navigation}: {navigation: any}) {
     capturePhoto,
     getPermissionStatus,
   } = useCameraHook();
-  const currentCameraPermission =  Camera.getCameraPermissionStatus() || getPermissionStatus();
+  const currentCameraPermission =
+    Camera.getCameraPermissionStatus() || getPermissionStatus();
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
@@ -71,6 +74,8 @@ function ScanScreen({navigation}: {navigation: any}) {
           FirestoreCollectionsEnum.BRANDED_FOODS_US,
           barcodes[0].value,
         );
+
+        console.log(product);
         if (product) {
           navigation.navigate(RoutesEnum.PRODUCT_DETAILS, {product});
         } else {
@@ -83,9 +88,20 @@ function ScanScreen({navigation}: {navigation: any}) {
             bottomOffset: 150,
           });
         }
+      } else {
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: 'Barcode not detected',
+          text2: 'Please try again',
+          visibilityTime: 3000,
+          bottomOffset: 150,
+        });
       }
     } else {
-      const response: any = await MlKitUtil.detectText(`file://'${imageSource}`);
+      const response: any = await MlKitUtil.detectText(
+        `file://'${imageSource}`,
+      );
       if (response?.text) {
         Toast.show({
           type: 'success',
