@@ -61,10 +61,19 @@ function ScanScreen({navigation}: {navigation: any}) {
   const currentCameraPermission =
     Camera.getCameraPermissionStatus() || getPermissionStatus();
   const scaleAnim = useRef(new Animated.Value(1)).current;
+  const [cameraPermission, setCameraPermission] = useState<any>(
+    currentCameraPermission,
+  );
 
   useEffect(() => {
     getPermission();
   }, []);
+
+  useEffect(() => {
+    if (currentCameraPermission) {
+      setCameraPermission(currentCameraPermission);
+    }
+  }, [currentCameraPermission]);
 
   const handleUsePhoto = async () => {
     if (cameraMode === CameraModeEnum.BARCODE) {
@@ -165,9 +174,9 @@ function ScanScreen({navigation}: {navigation: any}) {
     <ThemedBox style={styles.container}>
       {device === null ? (
         <NoCameraScreen />
-      ) : currentCameraPermission !== CameraPermissionEnum.GRANTED ? (
+      ) : cameraPermission !== CameraPermissionEnum.GRANTED ? (
         <Permissions
-          permissionStatus={currentCameraPermission}
+          permissionStatus={cameraPermission}
           onRequestPermission={getPermission}
         />
       ) : imageSource !== '' ? (
@@ -180,7 +189,6 @@ function ScanScreen({navigation}: {navigation: any}) {
         <React.Fragment>
           <View
             style={[
-              styles.cameraContainer,
               CameraModeEnum.PHOTO === cameraMode
                 ? styles.cameraContainerPhoto
                 : styles.cameraContainerBarcode,
@@ -240,7 +248,7 @@ function ScanScreen({navigation}: {navigation: any}) {
             </Text>
           )}
 
-          <View style={styles.buttonContainer}>
+          {/* <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[
                 styles.button,
@@ -257,7 +265,7 @@ function ScanScreen({navigation}: {navigation: any}) {
               onPress={() => setCameraMode(CameraModeEnum.BARCODE)}>
               <Text style={styles.buttonText}>Barcode</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </React.Fragment>
       )}
     </ThemedBox>

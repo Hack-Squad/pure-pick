@@ -20,8 +20,8 @@ const Stack = createNativeStackNavigator();
 
 const HomeStack = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name={RoutesEnum.HOME} component={HomeScreen} />
+    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
+      <Stack.Screen options={{headerShown: false}} name={RoutesEnum.HOME} component={HomeScreen} />
       <Stack.Screen name={RoutesEnum.PRODUCT_LIST} component={ProductList} />
       <Stack.Screen
         name={RoutesEnum.PRODUCT_DETAILS}
@@ -33,7 +33,7 @@ const HomeStack = () => {
 
 const ScanStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
       <Stack.Screen name={RoutesEnum.SCAN} component={ScanScreen} />
       <Stack.Screen
         name={RoutesEnum.PRODUCT_DETAILS}
@@ -118,7 +118,8 @@ function TabRouter() {
   return (
     <Tab.Navigator
       initialRouteName={RoutesEnum.SCAN}
-      tabBar={props => <CustomTabBar {...props} />}>
+      tabBar={props => <CustomTabBar {...props} />}
+      screenOptions={{headerTitleAlign: 'center'}}>
       <Tab.Screen
         name={RoutesEnum.HOME_STACK}
         component={HomeStack}
@@ -131,7 +132,7 @@ function TabRouter() {
         }}
       />
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name={RoutesEnum.SEARCH}
         component={SearchScreen}
         options={{
@@ -140,7 +141,7 @@ function TabRouter() {
           ),
           title: 'Search',
         }}
-      />
+      /> */}
 
       <Tab.Screen
         name={RoutesEnum.SCAN_STACK}
