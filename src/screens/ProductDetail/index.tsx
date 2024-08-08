@@ -15,8 +15,8 @@ import {RoutesEnum} from '../../constants/routes.contants';
 
 const ProductDetail = ({navigation}: {navigation: any}) => {
   const route = useRoute();
-  const {product } = route.params;
-  
+  const {product} = route.params;
+  console.log(product, 'product');
   if (!product) {
     Toast.show({
       type: 'error',
@@ -26,16 +26,16 @@ const ProductDetail = ({navigation}: {navigation: any}) => {
       visibilityTime: 3000,
       bottomOffset: 150,
     });
-     return navigation.goBack()
+    return navigation.goBack();
   }
 
   return (
     <ScrollView style={styles.container}>
       <ProductCard
-        imageUrl={null}
-        brandName={product?.brandOwner}
-        productName={product?.description}
-        score={Math.floor(Math.random() * 100) + 1}
+        imageUrl={product?.image_url || null}
+        brandName={product.brand_name}
+        productName={product.product_name}
+        score={product.nutrition_score}
       />
 
       <TouchableOpacity
@@ -45,13 +45,26 @@ const ProductDetail = ({navigation}: {navigation: any}) => {
         <Icon name="arrow-forward" color={'#fff'} />
       </TouchableOpacity>
 
-      <View style={styles.tabs}>
-        <Text style={[styles.tabText]}>Ingredients</Text>
-      </View>
+      {product?.ingredients_list ? (
+        <React.Fragment>
+          <View style={styles.tabs}>
+            <Text style={[styles.tabText]}>Ingredients</Text>
+          </View>
+          <View style={styles.ingredientInfo}>
+            <Text>{product.ingredients_list} </Text>
+          </View>
+        </React.Fragment>
+      ) : null}
 
-      {product?.ingredients  ? <View style={styles.ingredientInfo}>
-        <Text>{product.ingredients} </Text>
-      </View> : null}
+		<View style={styles.tabs}>
+			<TouchableOpacity>
+				<Text style={[styles.tabText]}>Nutrition</Text>
+			</TouchableOpacity>
+
+			<TouchableOpacity>
+				<Text style={[styles.tabText]}>Health Score</Text>
+			</TouchableOpacity>
+		</View>
     </ScrollView>
   );
 };
@@ -75,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: normalize(18),
     fontWeight: 'bold',
   },
-  
+
   infoTitle: {
     fontSize: normalize(8),
     fontWeight: 'bold',
@@ -104,14 +117,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     borderBottomWidth: normalize(1),
     borderBottomColor: '#DDD',
-	width: '100%',
-	padding: normalize(10),
+    width: '100%',
+    padding: normalize(10),
   },
   tabText: {
     fontSize: normalize(16),
     paddingVertical: normalize(10),
-	width: '100%',
-	textAlign: 'center',
+    width: '100%',
+    textAlign: 'center',
   },
   ingredientInfo: {
     paddingVertical: normalize(15),
