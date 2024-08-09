@@ -14,6 +14,7 @@ import ProductDetail from '../screens/ProductDetail';
 import ProductList from '../screens/ProductList';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {normalize} from '../styles';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -21,7 +22,11 @@ const Stack = createNativeStackNavigator();
 const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerTitleAlign: 'center'}}>
-      <Stack.Screen options={{headerShown: false}} name={RoutesEnum.HOME} component={HomeScreen} />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name={RoutesEnum.HOME}
+        component={HomeScreen}
+      />
       <Stack.Screen name={RoutesEnum.PRODUCT_LIST} component={ProductList} />
       <Stack.Screen
         name={RoutesEnum.PRODUCT_DETAILS}
@@ -82,18 +87,19 @@ const CustomTabBar = (props: any) => {
     props.navigation.navigate(routeName);
   };
 
+  const activeIndex = props.state.index;
+
   return (
     <View style={styles.customTabBar}>
       {props.state.routes.map((route: any, index: any) => (
         <TouchableOpacity key={index} onPress={() => onPress(route.name)}>
-          <View style={styles.tabItem}>
+          <View style={[styles.tabItem]}>
             <Icon
               name={getIconName(route.name)}
               size={24}
-              color={props.state.index === index ? 'tomato' : 'gray'}
+              color={activeIndex === index ? 'black' : 'gray'}
             />
-            <Text
-              style={{color: props.state.index === index ? 'tomato' : 'gray'}}>
+            <Text style={{color: activeIndex === index ? 'black' : 'gray'}}>
               {getTabName(route.name)}
             </Text>
           </View>
