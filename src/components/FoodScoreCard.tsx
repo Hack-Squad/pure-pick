@@ -3,28 +3,27 @@ import {View, Text, StyleSheet} from 'react-native';
 import ThemedBox from './ThemedBox';
 import {normalize} from '../styles';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function FoodScoreCard({score}: {score: number}) {
-
   const getFoodScoreConfig = (score: number) => {
-    if (score >= 0 && score <= 30) {
+    if (score >= 0 && score < 50) {
       return {
-        color: '#FFC107',
-        text: 'Not Ideal',
-		icon: 'warning',
+        color: '#de3b40',
+        text: 'Poor Choice',
+		icon: 'heart-broken',
       };
-    } else if (score >= 40 && score <= 70) {
+    } else if (score >= 50 && score <= 70) {
       return {
-        color: '#4CAF50',
-        text: 'Good',
-		icon: 'check-circle',
+        color: '#EFB034FF',
+        text: 'Not Ideal',
+		icon: 'heart-broken',
       };
     } else {
       return {
-        color: '#F44336',
-        text: 'Bad',
-		icon: 'error'
+        color: '#34C759',
+        text: 'Good Choice',
+		icon: 'heart',
       };
     }
   };
@@ -45,7 +44,7 @@ function FoodScoreCard({score}: {score: number}) {
       </AnimatedCircularProgress>
 
       <View style={[styles.badge, {backgroundColor: color}]}>
-		<Icon name={icon} size={20} color="white" />
+		{/* <Icon name={icon} size={20} color="white" /> */}
         <Text style={styles.badgeText}>{text}</Text>
       </View>
     </ThemedBox>
@@ -67,8 +66,8 @@ const styles = StyleSheet.create({
   },
   badge: {
     backgroundColor: '#FFC107',
+	maxHeight: 40,
     paddingHorizontal: 20,
-    paddingVertical: 5,
     borderRadius: 10,
 	flex: 1,
 	flexDirection: 'row',
@@ -82,3 +81,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+ 
