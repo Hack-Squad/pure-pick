@@ -13,9 +13,11 @@ export const styles = StyleSheet.create({
 		position: 'absolute',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		top: normalize(20),
-		left: 20,
-		right: 20,
+		paddingHorizontal: normalize(20),
+		paddingVertical: normalize(20),
+		left: normalize(0),
+		right: normalize(0),
+		top: normalize(0),
 		zIndex: 1,
 	},
 	cameraContainerPhoto: {
@@ -26,11 +28,10 @@ export const styles = StyleSheet.create({
 		borderColor: 'white',
 	},
 	cameraContainerBarcode: {
-		height: "30%",
+		height: "40%",
 		width: "90%",	
 		position: 'relative',
 		borderWidth: 4,
-		borderColor: 'white',
 	},
 	preview: {
 		position: 'absolute',
