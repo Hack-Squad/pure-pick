@@ -27,6 +27,10 @@ const HomeStack = () => {
         name={RoutesEnum.PRODUCT_DETAILS}
         component={ProductDetail}
       />
+      <Stack.Screen
+        name={RoutesEnum.NUTRITIONIST}
+        component={NutritionistScreen}
+      />
     </Stack.Navigator>
   );
 };
