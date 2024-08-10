@@ -7,6 +7,7 @@ export enum RoutesEnum {
   NUTRITIONIST = 'Nutritionist',
 	PRODUCT_DETAILS = 'Product Details',
 	PRODUCT_LIST = 'Products',
+	SPLASH = 'Splash',
 
   // Stack
   SCAN_STACK = 'ScanStack',

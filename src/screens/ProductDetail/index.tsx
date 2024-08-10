@@ -37,23 +37,6 @@ const ProductDetail = ({navigation}: {navigation: any}) => {
     return navigation.goBack();
   }
 
-  const toggleAccordion = () => {
-    setExpanded(!expanded);
-    if (expanded) {
-      Animated.timing(animatedHeight, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-    } else {
-      Animated.timing(animatedHeight, {
-        toValue: 100, // Adjust this value based on content height
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-    }
-  };
-
   return (
     <ScrollView style={styles.container}>
       <ProductCard
