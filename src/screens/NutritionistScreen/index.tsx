@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -11,24 +11,80 @@ import {
 import {GoogleGenerativeAI} from '@google/generative-ai';
 import ThemedBox from '../../components/ThemedBox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useRoute} from '@react-navigation/native';
 
 function NutritionistScreen() {
   const [messages, setMessages] = useState<any>([]);
   const [userInput, setUserInput] = useState('');
+  const flatListRef = useRef<FlatList>(null);
+  const route = useRoute();
+  const product = route?.params?.product ?? null;
 
-  const sendMessage = async () => {
-    if (userInput.trim() === '') return;
+  const getPrompt = () => {
+    if (product?.id && messages.length === 0) {
+      return `
+		You are an AI nutritionist assistant for the PurePick app. Your role is to provide expert advice on food, ingredients, diet, nutrition, and health. Here are the details of a product that a user has scanned:
+		Product Name: ${product?.product_name}
+        Brand Name: ${product?.brand_name}
+		Ingredients: ${product?.ingredients_list}
 
-    setMessages((prevMessages: any) => [
-      ...prevMessages,
-      {user: true, text: userInput},
-    ]);
-    setUserInput('');
+		Instructions: 
+		1.Offer scientifically accurate and up-to-date information.
+		2.Tailor advice to the user's specific query or product context.
+		3.Explain complex nutritional concepts in simple terms.
+		4.Encourage healthy eating habits and balanced diets.
+		5.Warn about potential allergens or health risks when relevant.
+		6.Do not give medical advice or diagnose conditions.
+		7.If unsure, admit limitations and suggest consulting a healthcare professional.
+		`;
+    } else if (product && product?.id && messages.length > 0) {
+      return `
+		You are an AI nutritionist assistant for the PurePick app. Your role is to provide expert advice on food, ingredients, diet, nutrition, and health. 
+		Product Name: ${product?.product_name}
+        Brand Name: ${product?.brand_name}
+		Ingredients: ${product?.ingredients_list}
+		Instructions: 
+		1.Offer scientifically accurate and up-to-date information.
+		2.Tailor advice to the user's specific query or product context.
+		3.Explain complex nutritional concepts in simple terms.
+		4.Encourage healthy eating habits and balanced diets.
+		5.Warn about potential allergens or health risks when relevant.
+		6.Do not give medical advice or diagnose conditions.
+		7.If unsure, admit limitations and suggest consulting a healthcare professional.
+  
+		${userInput}
+		`;
+    } else {
+      return `You are an AI nutritionist assistant for the PurePick app. Your role is to provide expert advice on food, ingredients, diet, nutrition, and health. 
+		Instructions: 
+		1.Offer scientifically accurate and up-to-date information.
+		2.Tailor advice to the user's specific query or product context.
+		3.Explain complex nutritional concepts in simple terms.
+		4.Encourage healthy eating habits and balanced diets.
+		5.Warn about potential allergens or health risks when relevant.
+		6.Do not give medical advice or diagnose conditions.
+		7.If unsure, admit limitations and suggest consulting a healthcare professional.
+  
+		${userInput}`;
+    }
+  };
+  const sendMessage = async (initial = false) => {
+    const messageText = initial ? '' : userInput.trim();
+    if (!initial && messageText === '') return;
+
+    if (!initial) {
+      setMessages((prevMessages: any) => [
+        ...prevMessages,
+        {user: true, text: messageText},
+      ]);
+      setUserInput('');
+    }
     const apiKey = 'AIzaSyAuo2XlZITGX5VCvnxmtL2qSLODMHeOjfU';
     try {
       const genAI = new GoogleGenerativeAI(apiKey);
       const model = genAI.getGenerativeModel({model: 'gemini-1.5-flash'});
-      const result = await model.generateContent(userInput);
+      const prompt = getPrompt();
+      const result = await model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
       setMessages((prevMessages: any) => [
@@ -56,15 +112,30 @@ function NutritionistScreen() {
     );
   };
 
+  useEffect(() => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToEnd({animated: true});
+    }
+  }, [messages]);
+  useEffect(() => {
+    sendMessage(true);
+  }, []);
+
   return (
     <ThemedBox style={styles.container}>
-      <Text style={styles.intro}>
-        Hello ! I'll help you with any questions you might have about the
-        ingredients in the product. What would you like to know?
-      </Text>
+      {messages && messages.length === 0 && (
+        <Text style={styles.intro}>
+          Hello ! I'll help you with any questions you might have about the
+          ingredients in the product. What would you like to know?
+        </Text>
+      )}
       <FlatList
         style={styles.list}
         data={messages}
+        ref={flatListRef}
+        onContentSizeChange={() =>
+          flatListRef.current?.scrollToEnd({animated: true})
+        }
         renderItem={({item}) => <Message item={item} />}
       />
 
@@ -75,7 +146,7 @@ function NutritionistScreen() {
           placeholder="Type your message..."
           style={styles.input}
         />
-        <TouchableOpacity onPress={sendMessage}>
+        <TouchableOpacity onPress={() => sendMessage(false)}>
           <Icon name="send" color={'#303030FF'} size={30} />
         </TouchableOpacity>
       </View>
