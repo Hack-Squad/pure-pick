@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import ThemedBox from '../../components/ThemedBox';
-import {View, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import ProductCard from '../../components/ProductCard';
 import {RoutesEnum} from '../../constants/routes.contants';
 
@@ -30,7 +36,7 @@ function ProductList({navigation}: {navigation: any}) {
       limit,
       lastDoc,
     );
-	console.log(dataList, "dataList")
+    console.log(dataList, 'dataList');
     if (dataList.length > 0) {
       setProducts((prevData: any) => [...prevData, ...dataList]);
       setLastDoc(lastVisible);
@@ -43,6 +49,14 @@ function ProductList({navigation}: {navigation: any}) {
   const onProductPress = (product: any) => {
     navigation.navigate(RoutesEnum.PRODUCT_DETAILS, {product});
   };
+
+  if (loading && products.length === 0) {
+    return (
+      <ThemedBox style={styles.containerLoading}>
+        <ActivityIndicator size="large" color="#34C759" />
+      </ThemedBox>
+    );
+  }
 
   return (
     <ThemedBox style={styles.container}>
@@ -72,6 +86,11 @@ export default ProductList;
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const styles = StyleSheet.create({
+  containerLoading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

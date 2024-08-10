@@ -5,8 +5,8 @@ export enum RoutesEnum {
   PROFILE = 'Profile',
   SEARCH = 'Search',
   NUTRITIONIST = 'Nutritionist',
-  PRODUCT_DETAILS = 'ProductDetails',
-  PRODUCT_LIST = 'ProductList',
+	PRODUCT_DETAILS = 'Product Details',
+	PRODUCT_LIST = 'Products',
 
   // Stack
   SCAN_STACK = 'ScanStack',
