@@ -110,7 +110,7 @@ const ProductDetail = ({navigation}: {navigation: any}) => {
         {activeTab === TabsEnum.INGREDIENTS ? (
           <View>
             <Text style={styles.tabContentText}>
-              {product.ingredients_list}{' '}
+              {product?.ingredients_list ? product.ingredients_list : 'Not Available'}
             </Text>
           </View>
         ) : (
