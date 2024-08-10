@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -12,8 +12,16 @@ import {normalize} from '../../styles';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {RoutesEnum} from '../../constants/routes.contants';
+import ChatWithNutritionist from '../../components/ChatWithNutritionist';
+import Accordion from '../../components/Accordion';
+
+enum TabsEnum {
+  INGREDIENTS = 'Ingredients',
+  NUTRITION = 'Nutrition',
+}
 
 const ProductDetail = ({navigation}: {navigation: any}) => {
+  const [activeTab, setActiveTab] = React.useState(TabsEnum.INGREDIENTS);
   const route = useRoute();
   const {product} = route.params;
   console.log(product, 'product');
@@ -38,32 +46,93 @@ const ProductDetail = ({navigation}: {navigation: any}) => {
         score={product.nutrition_score}
       />
 
-      <TouchableOpacity
-        style={styles.chatButton}
-        onPress={() => navigation.navigate(RoutesEnum.NUTRITIONIST, {product})}>
-        <Text style={styles.chatButtonText}>Chat with AI Nutritionist</Text>
-        <Icon name="arrow-forward" color={'#fff'} />
-      </TouchableOpacity>
+      <View style={styles.allergens}>
+        <Text style={styles.allergensHeading}>Allergens</Text>
+        <Text style={styles.allergensText}>
+          {product?.allergens_list?.trim()
+            ? product.allergens_list
+            : 'Allergens not Available'}
+        </Text>
+      </View>
 
-      {product?.ingredients_list ? (
-        <React.Fragment>
-          <View style={styles.tabs}>
-            <Text style={[styles.tabText]}>Ingredients</Text>
-          </View>
-          <View style={styles.ingredientInfo}>
-            <Text>{product.ingredients_list} </Text>
-          </View>
-        </React.Fragment>
-      ) : null}
+      <View style={{marginTop: normalize(10)}}>
+        <ChatWithNutritionist />
+      </View>
 
       <View style={styles.tabs}>
-        <TouchableOpacity>
-          <Text style={[styles.tabText]}>Nutrition</Text>
+        <TouchableOpacity
+          style={[
+            styles.tab,
+            activeTab === TabsEnum.INGREDIENTS ? styles.activeTab : {},
+          ]}
+          onPress={() => setActiveTab(TabsEnum.INGREDIENTS)}>
+          <Text
+            style={[
+              styles.tabText,
+              activeTab === TabsEnum.INGREDIENTS ? styles.activeTabText : {},
+            ]}>
+            Ingredients
+          </Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.tab,
+            activeTab === TabsEnum.NUTRITION ? styles.activeTab : {},
+          ]}
+          onPress={() => setActiveTab(TabsEnum.NUTRITION)}>
+          <Text
+            style={[
+              styles.tabText,
+              activeTab === TabsEnum.NUTRITION ? styles.activeTabText : {},
+            ]}>
+            Nutrition
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.tabContent}>
+        {activeTab === TabsEnum.INGREDIENTS ? (
+          <View>
+            <Text style={styles.tabContentText}>
+              {product?.ingredients_list ? product.ingredients_list : 'Not Available'}
+            </Text>
+          </View>
+        ) : (
+          <View>
+            <Text style={[styles.nutriontionCard]}>
+              Calories: {product?.calories || 'Not Available'}
+            </Text>
+            <Text style={[styles.nutriontionCard]}>
+              Serving Size: {product?.serving_size || 'Not Available'}
+            </Text>
 
-        <TouchableOpacity>
-          <Text style={[styles.tabText]}>Health Score</Text>
-        </TouchableOpacity>
+            {product?.nutrients_info_nutrients?.length ? (
+              <View style={{marginTop: normalize(10)}}>
+                <Accordion title="Calories & Macros">
+                  <View>
+                    {product.nutrients_info_nutrients.map((macro: any) => (
+                      <View
+                        key={macro.name}
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          borderBottomWidth: normalize(1),
+                          borderColor: '#DDD',
+                          marginBottom: normalize(10),
+                        }}>
+                        <Text style={styles.tabContentText}>{macro.name}</Text>
+                        <Text style={styles.tabContentText}>
+                          {macro.value} {macro.unit}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                </Accordion>
+              </View>
+            ) : (
+              <Text> Macros Not Available</Text>
+            )}
+          </View>
+        )}
       </View>
     </ScrollView>
   );
@@ -88,36 +157,31 @@ const styles = StyleSheet.create({
     fontSize: normalize(18),
     fontWeight: 'bold',
   },
-
-  infoTitle: {
-    fontSize: normalize(8),
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: normalize(5),
-  },
-  chatButton: {
-    backgroundColor: '#333',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  allergens: {
     padding: normalize(15),
-    marginVertical: normalize(15),
+    marginTop: normalize(30),
+    backgroundColor: '#FFF3CD',
     borderRadius: normalize(10),
   },
-  chatButtonText: {
-    color: 'white',
+  allergensHeading: {
     fontSize: normalize(16),
+    fontWeight: 'bold',
+    color: '#856404',
   },
-  arrowIcon: {
-    color: 'white',
-    fontSize: normalize(10),
+  allergensText: {
+    fontSize: normalize(14),
+    color: '#343A40',
+    marginTop: normalize(5),
   },
+
   tabs: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+  },
+  tab: {
+    width: '50%',
     borderBottomWidth: normalize(1),
     borderBottomColor: '#DDD',
-    width: '100%',
     padding: normalize(10),
   },
   tabText: {
@@ -126,8 +190,40 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
   },
-  ingredientInfo: {
+  activeTab: {
+    borderBottomWidth: normalize(4),
+    borderBottomColor: '#000',
+    borderRadius: normalize(2),
+  },
+  activeTabText: {
+    color: '#000',
+  },
+  tabContent: {
     paddingVertical: normalize(15),
+  },
+  tabContentText: {
+    fontSize: normalize(14),
+    color: '#343A40',
+    marginBottom: normalize(5),
+  },
+  tabContentTextHeading: {
+    fontSize: normalize(14),
+    color: '#343A40',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    marginTop: normalize(10),
+    marginBottom: normalize(5),
+  },
+  nutriontionCard: {
+    padding: normalize(15),
+    borderRadius: normalize(10),
+    backgroundColor: '#fff',
+    borderColor: '#DDD',
+	borderWidth: normalize(1),
+    fontWeight: 'bold',
+    fontSize: normalize(14),
+    marginBottom: normalize(10),
+	 color: '#343A40',
   },
 });
 

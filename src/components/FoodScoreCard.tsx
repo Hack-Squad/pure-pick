@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   badge: {
     backgroundColor: '#FFC107',
-	maxHeight: 40,
+	maxHeight: 24,
     paddingHorizontal: 20,
     borderRadius: 10,
 	flex: 1,

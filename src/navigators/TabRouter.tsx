@@ -12,6 +12,7 @@ import SearchScreen from '../screens/SearchScreen';
 import NutritionistScreen from '../screens/NutritionistScreen';
 import ProductDetail from '../screens/ProductDetail';
 import ProductList from '../screens/ProductList';
+import SplashScreen from '../screens/SplashScreen';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {normalize} from '../styles';
@@ -53,6 +54,9 @@ const ScanStack = () => {
 };
 
 const CustomTabBar = (props: any) => {
+  if (props.state.routes[props.state.index].name === RoutesEnum.SPLASH)
+    return null;
+
   const getIconName = (routeName: string) => {
     switch (routeName) {
       case RoutesEnum.HOME_STACK:
@@ -91,11 +95,13 @@ const CustomTabBar = (props: any) => {
     props.navigation.navigate(routeName);
   };
 
-  const activeIndex = props.state.index;
+  // splash is first index so we need to subtract 1 as we are hiding it
+  const activeIndex = props.state.index - 1;
+  const allRoutes = props.state.routes.filter((route: any) => route.name !== RoutesEnum.SPLASH);
 
   return (
     <View style={styles.customTabBar}>
-      {props.state.routes.map((route: any, index: any) => (
+      {allRoutes.map((route: any, index: any) => (
         <TouchableOpacity key={index} onPress={() => onPress(route.name)}>
           <View style={[styles.tabItem]}>
             <Icon
@@ -127,9 +133,21 @@ const styles = StyleSheet.create({
 function TabRouter() {
   return (
     <Tab.Navigator
-      initialRouteName={RoutesEnum.SCAN}
+      initialRouteName={RoutesEnum.SPLASH}
       tabBar={props => <CustomTabBar {...props} />}
-      screenOptions={{headerTitleAlign: 'center'}}>
+      screenOptions={({route}) => ({
+        headerTitleAlign: 'center',
+        tabBarVisible: false, // Hide bottom bar on Profile screen
+      })}>
+      <Tab.Screen
+        name={RoutesEnum.SPLASH}
+        component={SplashScreen}
+        options={{
+          headerShown: false,
+          tabBarButton: () => null, // Hides this tab from the bottom bar
+        }}
+      />
+
       <Tab.Screen
         name={RoutesEnum.HOME_STACK}
         component={HomeStack}
