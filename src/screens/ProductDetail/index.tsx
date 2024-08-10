@@ -40,7 +40,7 @@ const ProductDetail = ({navigation}: {navigation: any}) => {
 
       <TouchableOpacity
         style={styles.chatButton}
-        onPress={() => navigation.navigate(RoutesEnum.NUTRITIONIST)}>
+        onPress={() => navigation.navigate(RoutesEnum.NUTRITIONIST, {product})}>
         <Text style={styles.chatButtonText}>Chat with AI Nutritionist</Text>
         <Icon name="arrow-forward" color={'#fff'} />
       </TouchableOpacity>
@@ -56,15 +56,15 @@ const ProductDetail = ({navigation}: {navigation: any}) => {
         </React.Fragment>
       ) : null}
 
-		<View style={styles.tabs}>
-			<TouchableOpacity>
-				<Text style={[styles.tabText]}>Nutrition</Text>
-			</TouchableOpacity>
+      <View style={styles.tabs}>
+        <TouchableOpacity>
+          <Text style={[styles.tabText]}>Nutrition</Text>
+        </TouchableOpacity>
 
-			<TouchableOpacity>
-				<Text style={[styles.tabText]}>Health Score</Text>
-			</TouchableOpacity>
-		</View>
+        <TouchableOpacity>
+          <Text style={[styles.tabText]}>Health Score</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
