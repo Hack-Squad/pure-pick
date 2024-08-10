@@ -12,6 +12,7 @@ import {normalize} from '../../styles';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {RoutesEnum} from '../../constants/routes.contants';
+import ChatWithNutritionist from '../../components/ChatWithNutritionist';
 
 const ProductDetail = ({navigation}: {navigation: any}) => {
   const route = useRoute();
@@ -38,12 +39,7 @@ const ProductDetail = ({navigation}: {navigation: any}) => {
         score={product.nutrition_score}
       />
 
-      <TouchableOpacity
-        style={styles.chatButton}
-        onPress={() => navigation.navigate(RoutesEnum.NUTRITIONIST)}>
-        <Text style={styles.chatButtonText}>Chat with AI Nutritionist</Text>
-        <Icon name="arrow-forward" color={'#fff'} />
-      </TouchableOpacity>
+      <ChatWithNutritionist/>
 
       {product?.ingredients_list ? (
         <React.Fragment>

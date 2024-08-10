@@ -4,6 +4,7 @@ import ThemedBox from '../../components/ThemedBox';
 import {RoutesEnum} from '../../constants/routes.contants';
 import {normalize} from '../../styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import ChatWithNutritionist from '../../components/ChatWithNutritionist';
 
 function HomeScreen({navigation}: {navigation: any}) {
   return (
@@ -24,13 +25,8 @@ function HomeScreen({navigation}: {navigation: any}) {
           </TouchableOpacity>
         </View>
       </View>
-
-      <TouchableOpacity
-        style={styles.chatButton}
-        onPress={() => navigation.navigate(RoutesEnum.NUTRITIONIST)}>
-        <Text style={styles.chatButtonText}>Chat with AI Nutritionist</Text>
-        <Icon name="arrow-forward" color={'#fff'} />
-      </TouchableOpacity>
+ 
+		<ChatWithNutritionist />
 
       <TouchableOpacity
         style={styles.allProductsButton}
@@ -103,25 +99,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'black',
     fontSize: normalize(24),
-  },
-  chatButton: {
-    marginTop: normalize(40),
-    width: '100%',
-    backgroundColor: '#333',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: normalize(15),
-    marginVertical: normalize(15),
-    borderRadius: normalize(10),
-  },
-  chatButtonText: {
-    color: 'white',
-    fontSize: normalize(16),
-  },
-  arrowIcon: {
-    color: 'white',
-    fontSize: normalize(10),
   },
   allProductsButton: {
     width: '100%',
