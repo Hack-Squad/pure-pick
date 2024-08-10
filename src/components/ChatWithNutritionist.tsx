@@ -41,7 +41,7 @@ function ChatWithNutritionist() {
       style={styles.chatButton}
       onPress={() => navigation.navigate(RoutesEnum.NUTRITIONIST)}>
       <Text style={styles.chatButtonText}>Chat with AI Nutritionist</Text>
-      <Icon name="arrow-forward" color={'#fff'} />
+      <Icon name="arrow-forward" color={'#fff'} size={20} />
 
       {/* Shine Effect */}
       <Animated.View
@@ -71,7 +71,6 @@ export default ChatWithNutritionist;
 const styles = StyleSheet.create({
   chatButton: {
     position: 'relative',
-    marginTop: normalize(40),
     width: '100%',
     backgroundColor: '#333',
     flexDirection: 'row',
@@ -94,7 +93,6 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: width,
-    // Adjust the angle and width of the shine
     transform: [{rotate: '30deg'}],
   },
   linearGradient: {

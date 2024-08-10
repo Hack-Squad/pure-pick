@@ -25,8 +25,10 @@ function HomeScreen({navigation}: {navigation: any}) {
           </TouchableOpacity>
         </View>
       </View>
- 
-		<ChatWithNutritionist />
+
+      <View style={{marginTop: normalize(20)}}>
+        <ChatWithNutritionist />
+      </View>
 
       <TouchableOpacity
         style={styles.allProductsButton}
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowOffset: {width: 0, height: 4},
     backgroundColor: 'white',
-	padding: normalize(20),
+    padding: normalize(20),
   },
   foodImage: {
     width: '100%',
