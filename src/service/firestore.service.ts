@@ -1,4 +1,4 @@
-import firestore from '@react-native-firebase/firestore';
+import firestore, { limit } from '@react-native-firebase/firestore';
 
 class FirestoreService {
 	async getCollections(collection: string, limit: number = 10, lastDoc: any = null) {
@@ -37,6 +37,48 @@ class FirestoreService {
 	  console.error('Error fetching data from Firestore: ', error);
 	}
   }
+
+
+	async searchDocuments(
+		collection: string,
+		field: string,
+		value: string,
+		pageSize: number = 10,
+		lastVisible: any = null,
+	) {
+		try {
+			let query = firestore()
+				.collection(collection)
+				.where(field, '>=', value)
+				.where(field, '<=', value + '\uf8ff')
+				.orderBy(field)
+				.limit(pageSize);
+
+			if (lastVisible) {
+				query = query.startAfter(lastVisible);
+			}
+
+			const querySnapshot = await query.get();
+
+			if (querySnapshot.empty) {
+				console.log('No matching documents.');
+				return { documents: [], lastVisible: null };
+			}
+
+			const documents = querySnapshot.docs.map(doc => ({
+				id: doc.id,
+				...doc.data(),
+			}));
+
+			const newLastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+			return { documents, lastVisible: newLastVisible };
+		} catch (error) {
+			console.error('Error searching data in Firestore: ', error);
+			return { documents: [], lastVisible: null };
+		}
+	}
+
 }
 
 export const firestoreService = new FirestoreService();

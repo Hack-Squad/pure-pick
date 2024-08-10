@@ -1,7 +1,6 @@
 import {
   StyleSheet,
 } from 'react-native';
-import { Theme } from '../../theme';
 import { normalize } from '../../styles';
 
 
@@ -14,33 +13,32 @@ export const styles = StyleSheet.create({
 		position: 'absolute',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		top: normalize(20),
-		left: 20,
-		right: 20,
+		paddingHorizontal: normalize(20),
+		paddingVertical: normalize(20),
+		left: normalize(0),
+		right: normalize(0),
+		top: normalize(0),
 		zIndex: 1,
 	},
-	cameraContainer: {
+	cameraContainerPhoto: {
 		height: "50%",
 		width: "90%",
 		justifyContent: 'center',
 		borderWidth: 2,
 		borderColor: 'white',
 	},
-	cameraContainerPhoto: {
-		height: "50%",
-		width: "90%",
-	},
 	cameraContainerBarcode: {
-		height: "30%",
-		width: "90%",
+		height: "40%",
+		width: "90%",	
+		position: 'relative',
+		borderWidth: 4,
 	},
 	preview: {
-		width: "100%",
-		height: "100%",
-
-		backgroundColor: 'transparent',
-		alignSelf: 'center',
-		justifyContent: 'center'
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
 	},
 	instructions: {
 		position: 'absolute',

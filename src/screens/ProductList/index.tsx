@@ -26,10 +26,11 @@ function ProductList({navigation}: {navigation: any}) {
     setLoading(true);
 
     const {dataList, lastVisible} = await firestoreService.getCollections(
-      FirestoreCollectionsEnum.BRANDED_FOODS_US,
+      FirestoreCollectionsEnum.BRANDED_FOODS_INDIA,
       limit,
       lastDoc,
     );
+	console.log(dataList, "dataList")
     if (dataList.length > 0) {
       setProducts((prevData: any) => [...prevData, ...dataList]);
       setLastDoc(lastVisible);
@@ -50,10 +51,10 @@ function ProductList({navigation}: {navigation: any}) {
         renderItem={({item}: {item: any}) => (
           <TouchableOpacity onPress={() => onProductPress(item)}>
             <ProductCard
-              imageUrl={item?.image || null}
-              brandName={item.brandOwner}
-              productName={item.description}
-              score={Math.floor(Math.random() * 100) + 1}
+              imageUrl={item?.image_url || null}
+              brandName={item.brand_name}
+              productName={item.product_name}
+              score={item.nutrition_score}
             />
           </TouchableOpacity>
         )}

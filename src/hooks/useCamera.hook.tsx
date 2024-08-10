@@ -9,6 +9,12 @@ export enum CameraPermissionEnum {
   RESTRICTED = 'restricted',
 }
 
+export enum FlashModeEnum {
+  AUTO = 'auto',
+  ON = 'on',
+  OFF = 'off',
+}
+
 export default function useCameraHook() {
   const cameraRef = useRef<any>(null);
   const device: any = useCameraDevice('back');
@@ -16,16 +22,20 @@ export default function useCameraHook() {
   const [imageSource, setImageSource] = useState('');
 
   const getPermission = async () => {
-       await Camera.requestCameraPermission();
+    await Camera.requestCameraPermission();
   };
 
   const getPermissionStatus = () => {
-		return Camera.getCameraPermissionStatus()
- }
+    return Camera.getCameraPermissionStatus();
+  };
 
-  const capturePhoto = async () => {
+  const capturePhoto = async (flashMode: FlashModeEnum) => {
     if (cameraRef.current !== null) {
-      const photo = await cameraRef.current.takePhoto({});
+      const doesDeviceHasFlash = cameraRef.current.props.device.hasFlash;
+      console.log('doesDeviceHasFlash', doesDeviceHasFlash);
+      const photo = await cameraRef.current.takePhoto({
+        flash: doesDeviceHasFlash ? flashMode : 'off',
+      });
       setImageSource(photo.path);
       setShowCamera(false);
     }
@@ -40,6 +50,6 @@ export default function useCameraHook() {
     setImageSource,
     getPermission,
     capturePhoto,
-	getPermissionStatus
+    getPermissionStatus,
   };
 }

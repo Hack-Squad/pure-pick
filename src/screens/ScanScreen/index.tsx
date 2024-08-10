@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import PreviewCapturedImage from './PreviewCapturedImage';
 import Permissions from './Permissions';
-import {Camera} from 'react-native-vision-camera';
+import {Camera, useCameraPermission} from 'react-native-vision-camera';
 import useCameraHook, {CameraPermissionEnum} from '../../hooks/useCamera.hook';
 import {styles} from './styles';
 import ThemedBox from '../../components/ThemedBox';
@@ -23,17 +23,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {RoutesEnum} from '../../constants/routes.contants';
 import NoCameraScreen from './NoCameraDeviceFound';
 import Toast from 'react-native-toast-message';
+import { FlashModeEnum } from '../../hooks/useCamera.hook';
 
 enum CameraModeEnum {
   BARCODE = 'barcode',
   PHOTO = 'photo',
 }
 
-enum FlashModeEnum {
-  AUTO = 'auto',
-  ON = 'on',
-  OFF = 'off',
-}
+
 // ask for permission
 // if permission granted, show camera
 // if permission denied, show error message and button to go to settings
@@ -45,6 +42,7 @@ function ScanScreen({navigation}: {navigation: any}) {
   const [cameraMode, setCameraMode] = useState<CameraModeEnum>(
     CameraModeEnum.BARCODE,
   );
+  const {hasPermission} = useCameraPermission();
   const [flashMode, setFlashMode] = useState<FlashModeEnum>(FlashModeEnum.AUTO);
   const [capturing, setCapturing] = useState<Boolean>(false);
   const {
@@ -71,7 +69,7 @@ function ScanScreen({navigation}: {navigation: any}) {
       const barcodes = await MlKitUtil.scanBarcode(`file://'${imageSource}`);
       if (barcodes?.[0]?.value) {
         const product = await firestoreService.getDocument(
-          FirestoreCollectionsEnum.BRANDED_FOODS_US,
+          FirestoreCollectionsEnum.BRANDED_FOODS_INDIA,
           barcodes[0].value,
         );
 
@@ -156,16 +154,18 @@ function ScanScreen({navigation}: {navigation: any}) {
       }),
     ]).start();
 
-    capturePhoto();
+    capturePhoto(flashMode);
 
     setCapturing(false);
   };
+
+  console.log(flashMode, 'hasPermission');
 
   return (
     <ThemedBox style={styles.container}>
       {device === null ? (
         <NoCameraScreen />
-      ) : currentCameraPermission !== CameraPermissionEnum.GRANTED ? (
+      ) : !hasPermission ? (
         <Permissions
           permissionStatus={currentCameraPermission}
           onRequestPermission={getPermission}
@@ -178,22 +178,21 @@ function ScanScreen({navigation}: {navigation: any}) {
         />
       ) : (
         <React.Fragment>
-          <View
+          {/* <View
             style={[
-              styles.cameraContainer,
-              CameraModeEnum.PHOTO === cameraMode
-                ? styles.cameraContainerPhoto
-                : styles.cameraContainerBarcode,
-            ]}>
+            //   CameraModeEnum.PHOTO === cameraMode
+                // ? styles.cameraContainerPhoto
+                // :
+				 styles.cameraContainerBarcode,
+            ]}> */}
             <Camera
               ref={cameraRef}
               style={styles.preview}
               device={device}
-              isActive={true || showCamera}
+              isActive={true}
               photo={true}
-              flash={flashMode}
             />
-          </View>
+          {/* </View> */}
 
           <Animated.View
             style={[
@@ -234,13 +233,13 @@ function ScanScreen({navigation}: {navigation: any}) {
             </View>
           </View>
 
-          {cameraMode === CameraModeEnum.BARCODE && (
+          {/* {cameraMode === CameraModeEnum.BARCODE && (
             <Text style={styles.instructions}>
               Point your camera at a barcode
             </Text>
-          )}
+          )} */}
 
-          <View style={styles.buttonContainer}>
+          {/* <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[
                 styles.button,
@@ -257,7 +256,7 @@ function ScanScreen({navigation}: {navigation: any}) {
               onPress={() => setCameraMode(CameraModeEnum.BARCODE)}>
               <Text style={styles.buttonText}>Barcode</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </React.Fragment>
       )}
     </ThemedBox>
