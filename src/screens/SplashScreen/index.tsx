@@ -1,19 +1,21 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import ThemedBox from '../../components/ThemedBox';
 import {Text, View, Image} from 'react-native';
 import LottieView from 'lottie-react-native';
-import { useNavigation } from '@react-navigation/native';
-import { RoutesEnum } from '../../constants/routes.contants';
+import {useNavigation} from '@react-navigation/native';
+import {RoutesEnum} from '../../constants/routes.contants';
 
 function Splash() {
   const [loading, setLoading] = React.useState(true);
   const navigation = useNavigation();
 
-  useEffect(() => {
-	setTimeout(() => {
-	  navigation.navigate(RoutesEnum.HOME_STACK);
-	}, 3000);
-  }, []);
+  const onAnimationFinish = () => {
+    setLoading(false);
+
+    setTimeout(() => {
+      navigation.navigate(RoutesEnum.HOME_STACK);
+    }, 2000);
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -23,8 +25,8 @@ function Splash() {
           autoPlay
           style={{width: '100%', height: '100%'}}
           speed={1}
-		  loop={false}
-          onAnimationFinish={() => setLoading(false)}
+          loop={false}
+          onAnimationFinish={onAnimationFinish}
         />
       ) : (
         <Image
