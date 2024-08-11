@@ -46,6 +46,15 @@ const ProductDetail = ({navigation}: {navigation: any}) => {
         score={product.nutrition_score}
       />
 
+      <TouchableOpacity
+        style={styles.howScoreIsCalculated}
+        onPress={() => navigation.navigate(RoutesEnum.HOW_SCORE_IS_CALCULATED)}>
+        <Icon name="info" size={18} color="grey" />
+        <Text style={styles.howScoreIsCalculatedText}>
+          Know how the score is calculated
+        </Text>
+      </TouchableOpacity>
+
       <View style={styles.allergens}>
         <Text style={styles.allergensHeading}>Allergens</Text>
         <Text style={styles.allergensText}>
@@ -93,7 +102,9 @@ const ProductDetail = ({navigation}: {navigation: any}) => {
         {activeTab === TabsEnum.INGREDIENTS ? (
           <View>
             <Text style={styles.tabContentText}>
-              {product?.ingredients_list ? product.ingredients_list : 'Not Available'}
+              {product?.ingredients_list
+                ? product.ingredients_list
+                : 'Not Available'}
             </Text>
           </View>
         ) : (
@@ -150,6 +161,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: normalize(15),
   },
+
   backButton: {
     fontSize: normalize(26),
   },
@@ -219,11 +231,23 @@ const styles = StyleSheet.create({
     borderRadius: normalize(10),
     backgroundColor: '#fff',
     borderColor: '#DDD',
-	borderWidth: normalize(1),
+    borderWidth: normalize(1),
     fontWeight: 'bold',
     fontSize: normalize(14),
     marginBottom: normalize(10),
-	 color: '#343A40',
+    color: '#343A40',
+  },
+  howScoreIsCalculated: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: normalize(5),
+    marginTop: normalize(10),
+    alignSelf: 'flex-end',
+    maxWidth: '100%',
+  },
+  howScoreIsCalculatedText: {
+    fontSize: normalize(12),
+    color: '#000',
   },
 });
 
