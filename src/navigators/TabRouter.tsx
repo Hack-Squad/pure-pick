@@ -1,22 +1,25 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 
 import {RoutesEnum} from '../constants/routes.contants';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ScanScreen from '../screens/ScanScreen';
-import SearchScreen from '../screens/SearchScreen';
 import NutritionistScreen from '../screens/NutritionistScreen';
 import ProductDetail from '../screens/ProductDetail';
 import ProductList from '../screens/ProductList';
-import SplashScreen from '../screens/SplashScreen';
 import ScoreCalculationDetailsScreen from '../screens/ScoreCalculationDetailsScreen';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {normalize} from '../styles';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -101,7 +104,12 @@ const CustomTabBar = (props: any) => {
   };
 
   const onPress = (routeName: string) => {
-    props.navigation.navigate(routeName);
+    props.navigation.dispatch({
+      ...CommonActions.reset({
+        index: 0,
+        routes: [{name: routeName}],
+      }),
+    });
   };
 
   // splash is first index so we need to subtract 1 as we are hiding it
@@ -144,20 +152,12 @@ const styles = StyleSheet.create({
 function TabRouter() {
   return (
     <Tab.Navigator
-      initialRouteName={RoutesEnum.SPLASH}
+      initialRouteName={RoutesEnum.HOME_STACK}
       tabBar={props => <CustomTabBar {...props} />}
       screenOptions={({route}) => ({
         headerTitleAlign: 'center',
         tabBarVisible: false, // Hide bottom bar on Profile screen
       })}>
-      <Tab.Screen
-        name={RoutesEnum.SPLASH}
-        component={SplashScreen}
-        options={{
-          headerShown: false,
-          tabBarButton: () => null, // Hides this tab from the bottom bar
-        }}
-      />
 
       <Tab.Screen
         name={RoutesEnum.HOME_STACK}

@@ -2,19 +2,16 @@ import React, {useEffect} from 'react';
 import ThemedBox from '../../components/ThemedBox';
 import {Text, View, Image} from 'react-native';
 import LottieView from 'lottie-react-native';
-import {useNavigation} from '@react-navigation/native';
-import {RoutesEnum} from '../../constants/routes.contants';
 
-function Splash() {
+function Splash({setIsSplashLoaded}: {setIsSplashLoaded: Function}) {
   const [loading, setLoading] = React.useState(true);
-  const navigation = useNavigation();
 
   const onAnimationFinish = () => {
     setLoading(false);
 
     setTimeout(() => {
-      navigation.navigate(RoutesEnum.HOME_STACK);
-    }, 2000);
+      setIsSplashLoaded(true);
+    }, 1500);
   };
 
   return (
