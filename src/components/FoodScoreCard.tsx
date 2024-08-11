@@ -7,13 +7,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function FoodScoreCard({score}: {score: number}) {
   const getFoodScoreConfig = (score: number) => {
-    if (score >= 0 && score < 50) {
+    if (score >= 0 && score < 39) {
       return {
         color: '#de3b40',
         text: 'Poor Choice',
 		icon: 'heart-broken',
       };
-    } else if (score >= 50 && score <= 70) {
+    } else if (score >= 40 && score <= 74) {
       return {
         color: '#EFB034FF',
         text: 'Not Ideal',
