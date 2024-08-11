@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     padding: normalize(20),
   },
   heading: {
-    fontSize: normalize(50),
+    fontSize: normalize(32),
     fontWeight: 'bold',
     marginBottom: 10,
     marginEnd: 'auto',
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 4},
   },
   scanCardTitle: {
-    fontSize: normalize(20),
+    fontSize: normalize(18),
     fontWeight: 'bold',
     marginBottom: 10,
     color: 'black',
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   scanText: {
     color: 'black',
-    fontSize: normalize(18),
+    fontSize: normalize(14),
     flex: 1,
     flexWrap: 'wrap',
   },
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   scanButtonText: {
     textAlign: 'center',
     color: 'black',
-    fontSize: normalize(24),
+    fontSize: normalize(18),
   },
   allProductsButton: {
     width: '100%',
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   allProductsText: {
     textAlign: 'center',
-    fontSize: normalize(30),
+    fontSize: normalize(20),
     fontWeight: 'bold',
     color: 'black',
     textTransform: 'capitalize',

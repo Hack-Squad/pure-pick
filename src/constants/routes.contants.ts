@@ -8,6 +8,7 @@ export enum RoutesEnum {
 	PRODUCT_DETAILS = 'Product Details',
 	PRODUCT_LIST = 'Products',
 	SPLASH = 'Splash',
+	HOW_SCORE_IS_CALCULATED = 'How Score Is Calculated',
 
   // Stack
   SCAN_STACK = 'ScanStack',

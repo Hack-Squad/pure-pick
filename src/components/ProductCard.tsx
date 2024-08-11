@@ -1,6 +1,10 @@
 import React, {useState} from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import FoodScoreCard from './FoodScoreCard';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {normalize} from '../styles';
+import {useNavigation} from '@react-navigation/native';
+import {RoutesEnum} from '../constants/routes.contants';
 
 const ProductCard = ({
   imageUrl,
@@ -13,35 +17,36 @@ const ProductCard = ({
   productName: string;
   score: number;
 }) => {
+  const navigation = useNavigation();
   const [imageError, setImageError] = useState(false);
   return (
-    <View style={styles.card}>
-      <View style={styles.leftContent}>
-        <Image
-          source={
-            imageUrl && !imageError
-              ? {uri: imageUrl}
-              : require('../assets/images/product-placeholder.png')
-          }
-          style={styles.productImage}
-          onError={() => setImageError(true)}
-        />
-        <Text style={styles.brandName}>{brandName}</Text>
-        <Text style={styles.productName}>{productName}</Text>
-      </View>
+    <View style={styles.container}>
+      <View style={styles.card}>
+        <View style={styles.leftContent}>
+          <Image
+            source={
+              imageUrl && !imageError
+                ? {uri: imageUrl}
+                : require('../assets/images/product-placeholder.png')
+            }
+            style={styles.productImage}
+            onError={() => setImageError(true)}
+          />
+          <Text style={styles.brandName}>{brandName}</Text>
+          <Text style={styles.productName}>{productName}</Text>
+        </View>
 
-      <View style={styles.rightContent}>
-        <FoodScoreCard score={score} />
+        <View style={styles.rightContent}>
+          <FoodScoreCard score={score} />
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
+  container: {
     width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     shadowColor: '#fff',
     shadowOffset: {
       width: 0,
@@ -53,6 +58,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 20,
+  },
+  card: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   leftContent: {
     flex: 1,
@@ -73,7 +83,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   rightContent: {
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
 });
 

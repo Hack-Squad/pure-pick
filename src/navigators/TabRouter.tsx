@@ -13,6 +13,7 @@ import NutritionistScreen from '../screens/NutritionistScreen';
 import ProductDetail from '../screens/ProductDetail';
 import ProductList from '../screens/ProductList';
 import SplashScreen from '../screens/SplashScreen';
+import ScoreCalculationDetailsScreen from '../screens/ScoreCalculationDetailsScreen';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {normalize} from '../styles';
@@ -37,6 +38,10 @@ const HomeStack = () => {
         name={RoutesEnum.NUTRITIONIST}
         component={NutritionistScreen}
       />
+      <Stack.Screen
+        name={RoutesEnum.HOW_SCORE_IS_CALCULATED}
+        component={ScoreCalculationDetailsScreen}
+      />
     </Stack.Navigator>
   );
 };
@@ -48,6 +53,10 @@ const ScanStack = () => {
       <Stack.Screen
         name={RoutesEnum.PRODUCT_DETAILS}
         component={ProductDetail}
+      />
+      <Stack.Screen
+        name={RoutesEnum.HOW_SCORE_IS_CALCULATED}
+        component={ScoreCalculationDetailsScreen}
       />
     </Stack.Navigator>
   );
@@ -97,7 +106,9 @@ const CustomTabBar = (props: any) => {
 
   // splash is first index so we need to subtract 1 as we are hiding it
   const activeIndex = props.state.index - 1;
-  const allRoutes = props.state.routes.filter((route: any) => route.name !== RoutesEnum.SPLASH);
+  const allRoutes = props.state.routes.filter(
+    (route: any) => route.name !== RoutesEnum.SPLASH,
+  );
 
   return (
     <View style={styles.customTabBar}>
