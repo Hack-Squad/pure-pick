@@ -113,7 +113,7 @@ const CustomTabBar = (props: any) => {
   };
 
   // splash is first index so we need to subtract 1 as we are hiding it
-  const activeIndex = props.state.index - 1;
+  const activeIndex = props.state.index 
   const allRoutes = props.state.routes.filter(
     (route: any) => route.name !== RoutesEnum.SPLASH,
   );
